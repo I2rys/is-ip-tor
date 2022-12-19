@@ -1,23 +1,26 @@
-//Dependencies
+"use strict";
+
+// Dependencies
 const Axios = require("axios")
 
-//Main
-async function check(ip){
-    var response = await Axios({
-        method: "GET",
-        url: "https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-nodes.lst"
+// Main
+function check(ip){
+    return new Promise(async(resolve)=>{
+        var response = await Axios({
+            method: "GET",
+            url: "https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-nodes.lst"
+        })
+
+        response = response.data
+
+        if(response.match(ip)){
+            resolve(true)
+        }else{
+            resolve(false)
+        }
     })
-
-    response = response.data
-
-    if(response.indexOf(ip) !== -1){
-        return true
-    }else{
-        return false
-    }
 }
 
-//Main
 module.exports = {
     check
 }
